@@ -3,7 +3,7 @@
 Base Model class
 """
 
-
+import models
 from datetime import datetime
 import uuid
 
@@ -34,7 +34,9 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-
+            models.storage.new(self)
+            models.storage.save()
+            
     def __str__(self):
         """
         Returns string representation of Base Instance
@@ -48,6 +50,7 @@ class BaseModel:
         with the current datetime
         """
         self.update_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """
