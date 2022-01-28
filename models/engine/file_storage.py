@@ -15,19 +15,6 @@ class FileStorage:
     """
 
     """
-=======
-#!/usr/bin/python3
-"""
-Contains the FileStorage class
-"""
-import json
-from models.base_model import BaseModel
-
-
-class FileStorage:
-    """serializes instances to a JSON and deserializes JSON to instances"""
-
->>>>>>> 6c99573bd458e64cd849b3d22e022e063d160b9d
     __file_path = "file.json"
     __objects = {}
 
