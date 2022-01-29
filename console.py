@@ -4,6 +4,7 @@ The console
 """
 from datetime import datetime
 import cmd
+import models
 from models.base_model import BaseModel
 from models import storage
 
