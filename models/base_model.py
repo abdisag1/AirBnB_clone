@@ -1,12 +1,12 @@
-#!/usr/bin/python3
+#!usr/bin/pyhton3
 """
 Base Model class
 """
 
-import models
+
 from datetime import datetime
 import uuid
-
+import models
 
 class BaseModel:
     """
@@ -16,6 +16,9 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """
         Initializes Base Instance
+        Args:
+            args: list of arguments
+            kwargs: dictionary of arguments
         """
         if kwargs:
             self.id = str(uuid.uuid4())
@@ -35,8 +38,7 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
             models.storage.new(self)
-            models.storage.save()
-            
+
     def __str__(self):
         """
         Returns string representation of Base Instance
@@ -49,15 +51,16 @@ class BaseModel:
         Updates the public instance attribute 'updated_at'
         with the current datetime
         """
-        self.update_at = datetime.now()
+        self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
         """
         Returns dictionary representation of Base Instance
         """
-        new_dict = dict(self.__dict__)
-        new_dict['__class__'] = self.__class__.__name__
-        new_dict['created_at'] = self.created_at.isoformat()
-        new_dict['updated_at'] = self.updated_at.isoformat()
+        new_dict = self.__dict__.copy()
+        new_dict["__class__"] = self.__class__.__name__
+        new_dict["created_at"] = self.created_at.isoformat()
+        new_dict["updated_at"] = self.updated_at.isoformat()
+
         return new_dict
