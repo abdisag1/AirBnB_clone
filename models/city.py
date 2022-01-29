@@ -5,7 +5,7 @@ city  class
 from models.base_model import BaseModel
 
 
-class City:
+class City(BaseModel):
     """describe city"""
     state_id = ""
     name = ""
