@@ -12,7 +12,7 @@ from models.city import City
 from datetime import datetime
 
 
-class TestAmenity(unittest.TestCase):
+class TestCity(unittest.TestCase):
     """ class for testing City class"""
 
     def test_subclaass(self):
