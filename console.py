@@ -12,7 +12,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-
+from models import storage
 
 classes = {
     'Amenity': Amenity,'BaseModel': BaseModel , 'City':City,
@@ -93,16 +93,23 @@ class HBNBCommand(cmd.Cmd):
                         storage.save()
                 
     def do_all(self, args):
-        """Prints string representation of all instances"""
-        if args == "":
-            print("** class name missing **")
+        """Usage: all or all <class> or <class>.all()
+        Display string representations of all instances of a given class.
+        If no class is specified, displays all instantiated objects."""
+        args = args.split()
+        if len(args) > 0 and args[0] not in list_of_classes:
+            print("** class doesn't exist **")
         else:
-            args = args.split()
-            if args[0] not in list_of_classes:
-                print("** class doesn't exist **")
-            else:
-                print(storage.all())
+            objl = []
+            for obj in storage.all().values():
+                if len(args) > 0 and args[1] == obj.__class__.__name__:
+                    objl.append(obj.__str__())
+                elif len(args) == 0:
+                    objl.append(obj.__str__())
+            print(objl)
     
+
+        
     def do_update(self, args):
         """Updates an instance based on the class name and id"""
         if args == "":
@@ -131,13 +138,5 @@ class HBNBCommand(cmd.Cmd):
                                 storage.save()
             
            
-            
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-    
-    
-    
-    
-    
-    
-    
