@@ -5,6 +5,7 @@ The console
 from datetime import datetime
 import cmd
 import models
+import re
 from models.base_model import BaseModel
 from models.amenity import Amenity
 from models.city import City
@@ -40,6 +41,14 @@ class HBNBCommand(cmd.Cmd):
         """Quit command to exit the program"""
         return True
    
+    def emptyline(self):
+        """
+        When an empty line is entered in response to the prompt,
+        it won't repeat the last nonempty command entered.
+        """
+        pass
+
+
     def do_create(self, args):
         """Creates a new instance of BaseModel and saves it"""
         
@@ -136,7 +145,60 @@ class HBNBCommand(cmd.Cmd):
                                 setattr(instan_data, args[2], args[3])
                                 setattr(instan_data, 'updated_at', datetime.now())
                                 storage.save()
+    
+    def do_count(self, args):
+        """ count <class> or <class>.count()
+        Retrieve the number of instances of a given class."""
+        args = args.split()
+        count = 0
+        for obj in storage.all().values():
+            if args[0] == obj.__class__.__name__:
+                count += 1
+        print(count)        
+      
+
+    def get_objects(self, instance=''):
+        """Gets the elements created by the console
+        This method takes care of obtaining the information
+        of all the instances created in the file `objects.json`
+        that is used as the storage engine.
+               """
+        objects = models.storage.all()
+
+        if instance:
+            keys = objects.keys()
+            return [str(val) for key, val in objects.items()
+                    if key.startswith(instance)]
+
+        return [str(val) for key, val in objects.items()]
+
+   
+    def default(self, line):
+        """
+        by using regular expression we will search for an pattern "."
+        "<class name>.<method name>" or not,
+        and links it to the corresponding method in case the
+        class exists and the method belongs to the class.
+        """
+        if '.' in line:
+            splitted = re.split(r'\.|\(|\)', line)
+            class_name = splitted[0]
+            method_name = splitted[1]
+
+            if class_name in list_of_classes:
+                if method_name == 'all':
+                    print(self.get_objects(class_name))
+                elif method_name == 'count':
+                    print(len(self.get_objects(class_name)))
+                elif method_name == 'show':
+                    class_id = splitted[2][1:-1]
+                    self.do_show(class_name + ' ' + class_id)
+                elif method_name == 'destroy':
+                    class_id = splitted[2][1:-1]
+                    self.do_destroy(class_name + ' ' + class_id)
+
+
+
             
-           
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
