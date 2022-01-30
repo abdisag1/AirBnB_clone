@@ -33,10 +33,6 @@ class HBNBCommand(cmd.Cmd):
         """Exits console"""
         return True
 
-    def emptyline(self):
-        """ overwriting the emptyline method """
-        return False
-
     def do_quit(self, args):
         """Quit command to exit the program"""
         return True
