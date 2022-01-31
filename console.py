@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 The console
 """
@@ -16,7 +16,7 @@ from models.user import User
 from models import storage
 
 classes = {
-    'Amenity': Amenity,'BaseModel': BaseModel , 'City':City,
+    'Amenity': Amenity, 'BaseModel': BaseModel, 'City': City,
     'Place': Place, 'Review': Review, 'State': State, 'User': User
 }
 
@@ -27,20 +27,16 @@ for key in classes:
 
 class HBNBCommand(cmd.Cmd):
     """ HBNH console """
-    prompt = '(hbnb)'
+    prompt = '(hbnb) '
 
     def do_EOF(self, args):
         """Exits console"""
         return True
 
-    def emptyline(self):
-        """ overwriting the emptyline method """
-        return False
-
     def do_quit(self, args):
         """Quit command to exit the program"""
         return True
-   
+
     def emptyline(self):
         """
         When an empty line is entered in response to the prompt,
@@ -48,13 +44,10 @@ class HBNBCommand(cmd.Cmd):
         """
         pass
 
-
     def do_create(self, args):
         """Creates a new instance of BaseModel and saves it"""
-        
         if args == "":
             print("** class name missing **")
-
         else:
             if args not in list_of_classes:
                 print("** class doesn't exist **")
@@ -62,7 +55,7 @@ class HBNBCommand(cmd.Cmd):
                 new_instance = classes[args]()
                 print(new_instance.id)
                 new_instance.save()
-    
+
     def do_show(self, args):
         """Prints string representation of an instance"""
         if args == "":
@@ -80,27 +73,26 @@ class HBNBCommand(cmd.Cmd):
                         print("** no instance found **")
                     else:
                         print(storage.all()[key])
-                        
+
     def do_destroy(self, args):
         """Deletes an instance based on the class name and id"""
-      
         if args == "":
-           print("** class name missing **")
+            print("** class name missing **")
         else:
-           args = args.split()
-           if args[0] not in list_of_classes:
-               print("** class doesn't exist **")
-           else:
-               if len(args) < 2:
-                   print("** instance id missing **")
-               else:
-                   key = args[0]+"." + args[1]
-                   if key not in storage.all():
-                       print("** no instance found **")
-                   else:
+            args = args.split()
+            if args[0] not in list_of_classes:
+                print("** class doesn't exist **")
+            else:
+                if len(args) < 2:
+                    print("** instance id missing **")
+                else:
+                    key = args[0]+"." + args[1]
+                    if key not in storage.all():
+                        print("** no instance found **")
+                    else:
                         del storage.all()[key]
                         storage.save()
-                
+
     def do_all(self, args):
         """Usage: all or all <class> or <class>.all()
         Display string representations of all instances of a given class.
@@ -115,10 +107,8 @@ class HBNBCommand(cmd.Cmd):
                     objl.append(obj.__str__())
                 elif len(args) == 0:
                     objl.append(obj.__str__())
-            print(objl)
-    
+                print(objl)
 
-        
     def do_update(self, args):
         """Updates an instance based on the class name and id"""
         if args == "":
@@ -143,9 +133,10 @@ class HBNBCommand(cmd.Cmd):
                                 print("** value missing **")
                             else:
                                 setattr(instan_data, args[2], args[3])
-                                setattr(instan_data, 'updated_at', datetime.now())
+                                setattr(instan_data, 'updated_at',
+                                        datetime.now())
                                 storage.save()
-    
+
     def do_count(self, args):
         """ count <class> or <class>.count()
         Retrieve the number of instances of a given class."""
@@ -154,8 +145,7 @@ class HBNBCommand(cmd.Cmd):
         for obj in storage.all().values():
             if args[0] == obj.__class__.__name__:
                 count += 1
-        print(count)        
-      
+        print(count)
 
     def get_objects(self, instance=''):
         """Gets the elements created by the console
@@ -164,15 +154,12 @@ class HBNBCommand(cmd.Cmd):
         that is used as the storage engine.
                """
         objects = models.storage.all()
-
         if instance:
             keys = objects.keys()
             return [str(val) for key, val in objects.items()
                     if key.startswith(instance)]
-
         return [str(val) for key, val in objects.items()]
 
-   
     def default(self, line):
         """
         by using regular expression we will search for an pattern "."
@@ -184,7 +171,10 @@ class HBNBCommand(cmd.Cmd):
             splitted = re.split('[.,()]', line)
             class_name = splitted[0]
             method_name = splitted[1]
+<<<<<<< HEAD
            
+=======
+>>>>>>> 2044dd35d1be3997f2a42e746bc70a69b7303f25
             if class_name in list_of_classes:
                 if method_name == 'all':
                     print(self.get_objects(class_name))
@@ -202,7 +192,5 @@ class HBNBCommand(cmd.Cmd):
                     arg4 = splitted[4]
                     self.do_update(class_name + ' ' + class_id + ' ' + arg3 + ' ' + arg4 ) 
 
-
-            
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
