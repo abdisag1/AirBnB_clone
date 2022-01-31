@@ -171,10 +171,7 @@ class HBNBCommand(cmd.Cmd):
             splitted = re.split('[.,()]', line)
             class_name = splitted[0]
             method_name = splitted[1]
-<<<<<<< HEAD
-           
-=======
->>>>>>> 2044dd35d1be3997f2a42e746bc70a69b7303f25
+
             if class_name in list_of_classes:
                 if method_name == 'all':
                     print(self.get_objects(class_name))
