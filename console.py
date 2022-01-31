@@ -181,10 +181,10 @@ class HBNBCommand(cmd.Cmd):
         class exists and the method belongs to the class.
         """
         if '.' in line:
-            splitted = re.split(r'\.|\(|\)', line)
+            splitted = re.split('[.,()]', line)
             class_name = splitted[0]
             method_name = splitted[1]
-
+           
             if class_name in list_of_classes:
                 if method_name == 'all':
                     print(self.get_objects(class_name))
@@ -196,7 +196,11 @@ class HBNBCommand(cmd.Cmd):
                 elif method_name == 'destroy':
                     class_id = splitted[2][1:-1]
                     self.do_destroy(class_name + ' ' + class_id)
-
+                elif method_name == 'update':
+                    class_id = splitted[2][1:-1]
+                    arg3 = splitted[3]
+                    arg4 = splitted[4]
+                    self.do_update(class_name + ' ' + class_id + ' ' + arg3 + ' ' + arg4 ) 
 
 
             
